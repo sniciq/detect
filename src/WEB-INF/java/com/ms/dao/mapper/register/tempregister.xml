@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.ms.dao.mapper.register.TempRegisterDao">
+
+	<insert id="insert" parameterType="com.ms.dao.entity.register.TempRegisterEty">
+		insert into tempregister(
+			id,unit,tmerName,minTemp,maxTemp,miniScale,manufacturer,tmterNo,sampleNo,certificateNo,result,createUserID,createDate)
+		values (
+			#{id},#{unit},#{tmerName},#{minTemp},#{maxTemp},#{miniScale},#{manufacturer},#{tmterNo},#{sampleNo},#{certificateNo},#{result},#{createUserID},#{createDate}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="com.ms.dao.entity.register.TempRegisterEty">
+		SELECT * from tempregister
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+	</select>
+
+	<update id="updateById" parameterType="com.ms.dao.entity.register.TempRegisterEty">
+		UPDATE tempregister SET
+		<if test="id != null">id=#{id},</if>
+		<if test="unit != null">unit=#{unit},</if>
+		<if test="tmerName != null">tmerName=#{tmerName},</if>
+		<if test="minTemp != null">minTemp=#{minTemp},</if>
+		<if test="maxTemp != null">maxTemp=#{maxTemp},</if>
+		<if test="miniScale != null">miniScale=#{miniScale},</if>
+		<if test="manufacturer != null">manufacturer=#{manufacturer},</if>
+		<if test="tmterNo != null">tmterNo=#{tmterNo},</if>
+		<if test="sampleNo != null">sampleNo=#{sampleNo},</if>
+		<if test="certificateNo != null">certificateNo=#{certificateNo},</if>
+		<if test="result != null">result=#{result},</if>
+		<if test="createUserID != null">createUserID=#{createUserID},</if>
+		<if test="createDate != null">createDate=#{createDate},</if>
+		 id=#{id}
+		WHERE
+		 id=#{id}
+	</update>
+
+	<select id="selectById" parameterType="int" resultType="com.ms.dao.entity.register.TempRegisterEty">
+		select * from tempregister where id=#{id}
+	</select>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM tempregister WHERE id=#{id}
+	</delete>
+
+	<select id="selectLimitCount" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="java.lang.Integer">
+		SELECT count(1) from tempregister
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+	</select>
+
+	<select id="selectByLimit" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="com.ms.dao.entity.register.TempRegisterEty">
+		SELECT * from tempregister
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+	</select>
+	
+	<select id="selectDataByLimit" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="com.ms.controller.register.TempRegisterData">
+		SELECT t.*,u.userName as createUserName from tempregister t 
+		left join user u on t.createUserID = u.id
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+	</select>
+	
+	
+</mapper>

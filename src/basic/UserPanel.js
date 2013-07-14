@@ -25,6 +25,7 @@ com.ms.basic.UserPanel=Ext.extend(Ext.Panel, {
 				    name: 'sex',
 				    value: '男',
 				    allowBlank: false,
+				    editable: false,
 				    store: new Ext.data.ArrayStore({
 				        id: 0,
 				        fields: ['value','text'],
@@ -33,8 +34,7 @@ com.ms.basic.UserPanel=Ext.extend(Ext.Panel, {
 				    valueField: 'value',
 				    displayField: 'text'
 				}),
-				{xtype: 'datefield',format:'Y-m-d',name: 'birthday', fieldLabel: '出生日期',anchor : '95%'},
-				{xtype: 'textfield',name: 'userCode', fieldLabel: '员工号',anchor : '95%', allowBlank: false}
+				{xtype: 'datefield',format:'Y-m-d',name: 'birthday', fieldLabel: '出生日期',anchor : '95%',editable: false}
 			],
 			buttons: [
 				{
@@ -273,35 +273,13 @@ com.ms.basic.UserPanel=Ext.extend(Ext.Panel, {
 						{
 							columnWidth: .33, layout: 'form',
 							items: [
-								{xtype: 'textfield',name: 'name', fieldLabel: '用户名',anchor : '95%'}
+								{xtype: 'textfield',name: 'userName', fieldLabel: '用户名',anchor : '95%'}
 							]
 						},
 						{
 							columnWidth: .33, layout: 'form',
 							items: [
-								{xtype: 'textfield',name: 'username', fieldLabel: '真实姓名',anchor : '95%'}
-							]
-						},
-						{
-							columnWidth: .33, layout: 'form',
-							items: [
-								new Ext.form.ComboBox({
-									fieldLabel: '用户类型',
-									name: 'usertype',
-									hiddenName: 'usertype',
-									anchor : '95%',
-									triggerAction: 'all', 
-									editable: false,
-									mode: 'local',
-									allowBlank : false,
-									valueField: 'value',
-									displayField: 'text',
-									value: '',
-									store: new Ext.data.SimpleStore({
-										fields: ['value', 'text'],
-										data: [['', '全部'],['AE', 'AE'],['渠道销售', '渠道销售'],['直客销售', '直客销售'],['销售助理', '销售助理'],['默认', '默认']]
-									})
-								})
+								{xtype: 'textfield',name: 'realName', fieldLabel: '真实姓名',anchor : '95%'}
 							]
 						}
 					]
@@ -345,11 +323,10 @@ com.ms.basic.UserPanel=Ext.extend(Ext.Panel, {
 			sm,
 			new Ext.grid.RowNumberer(),
 			{header:'用户ID', dataIndex:'id', sortable:true},
-			{header:'用户名', dataIndex:'name', sortable:true},
-			{header:'真实姓名', dataIndex:'username', sortable:true},
-			{header:'用户类型', dataIndex:'usertype', sortable:true},
-			{header:'邮箱', dataIndex:'useremail', sortable:true},
-			{header:'性别', dataIndex:'gender', sortable:true}
+			{header:'用户名', dataIndex:'userName', sortable:true},
+			{header:'真实姓名', dataIndex:'realName', sortable:true},
+			{header:'邮箱', dataIndex:'email', sortable:true},
+			{header:'性别', dataIndex:'sex', sortable:true}
 		]);
 		
 		var ds = new Ext.data.Store({
@@ -367,12 +344,12 @@ com.ms.basic.UserPanel=Ext.extend(Ext.Panel, {
 				root: 'invdata',
 				fields: [
 					{name: 'id'},
-					{name: 'username'},
+					{name: 'userName'},
 					{name: 'password'},
-					{name: 'useremail'},
+					{name: 'email'},
 					{name: 'usertype'},
-					{name: 'gender'},
-					{name: 'name'}
+					{name: 'sex'},
+					{name: 'realName'}
 				]
 			})
 		});

@@ -11,5 +11,6 @@
 		
 		<mapper resource="com/ms/dao/mapper/register/standardtmpter.xml"/>
 		<mapper resource="com/ms/dao/mapper/register/standardtmptercorrection.xml"/>
+		<mapper resource="com/ms/dao/mapper/register/tempregister.xml"/>
 	</mappers>
 </configuration>
