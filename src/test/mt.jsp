@@ -23,6 +23,8 @@
 	<script type="text/javascript" src="../basic/RoleUserWin.js"></script>
 	<script type="text/javascript" src="../basic/RolePanel.js"></script>
 	<script type="text/javascript" src="../basic/UserPanel.js"></script>
+	<script type="text/javascript" src="../register/WeekProgressPanel.js"></script>
+	
 	
 	<script type="text/javascript">
 		Ext.BLANK_IMAGE_URL = '../ExtJS/resources/images/default/s.gif';
@@ -30,7 +32,7 @@
 		Ext.onReady(function() {
 			Ext.QuickTips.init();
 			
-			var panel = new com.ms.basic.RolePanel({region:'center', ctx: '${ctx}'});
+			var panel = new com.ms.controller.register.WeekProgressPanel({region:'center', ctx: '${ctx}'});
 			
 			var viewport = new Ext.Viewport({
 				layout: 'border',

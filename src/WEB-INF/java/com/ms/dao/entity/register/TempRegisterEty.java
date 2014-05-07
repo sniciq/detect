@@ -2,14 +2,18 @@ package com.ms.dao.entity.register;
 
 import java.util.Date;
 
+/**
+ * 样品登记
+ *
+ */
 public class TempRegisterEty extends com.eddy.dao.base.BaseEntity {
 
 	private Integer id;	//ID
 	private String unit;	//送检单位
 	private String tmerName;	//温度计名称:水银温度计，煤油温度计，干湿温度计
-	private java.lang.Double minTemp;	//最小温度
-	private java.lang.Double maxTemp;	//最大温度
-	private java.lang.Double miniScale;	//最小分度值
+	private String minTemp;	//最小温度
+	private String maxTemp;	//最大温度
+	private String miniScale;	//最小分度值
 	private String manufacturer;	//生产厂家
 	private String tmterNo;	//温度计编号
 	private String sampleNo;	//样品编号
@@ -17,7 +21,44 @@ public class TempRegisterEty extends com.eddy.dao.base.BaseEntity {
 	private String result;	//检测结果：“待测”、“合格”、“不合格”、“断柱”、“损坏”
 	private Integer createUserID;	//创建人
 	private Date createDate;	//创建时间
-
+	private String tempregisterpointName;//检测点ID
+	
+	private String immersionType;//浸没方式(全浸、局浸)
+	private String sensingLiquid;//感温液体(有机、汞基、水银)
+	private Boolean outMax = false;//上限超
+	private Boolean outMin = false;//下限超
+	
+	public String getTempregisterpointName() {
+		return tempregisterpointName;
+	}
+	public void setTempregisterpointName(String tempregisterpointName) {
+		this.tempregisterpointName = tempregisterpointName;
+	}
+	
+	public String getImmersionType() {
+		return immersionType;
+	}
+	public void setImmersionType(String immersionType) {
+		this.immersionType = immersionType;
+	}
+	public String getSensingLiquid() {
+		return sensingLiquid;
+	}
+	public void setSensingLiquid(String sensingLiquid) {
+		this.sensingLiquid = sensingLiquid;
+	}
+	public Boolean getOutMax() {
+		return outMax;
+	}
+	public void setOutMax(Boolean outMax) {
+		this.outMax = outMax;
+	}
+	public Boolean getOutMin() {
+		return outMin;
+	}
+	public void setOutMin(Boolean outMin) {
+		this.outMin = outMin;
+	}
 	/**
 	* 得到 ID
 	* @return ID : Integer
@@ -67,14 +108,14 @@ public class TempRegisterEty extends com.eddy.dao.base.BaseEntity {
 	* 得到 最小温度
 	* @return 最小温度 : java.lang.Double
 	*/
-	public java.lang.Double getMinTemp() {
+	public String getMinTemp() {
 		return this.minTemp;
 	}
 	/**
 	 * 设置 最小温度
 	 * @param minTemp, 最小温度 : java.lang.Double
 	*/
-	public void setMinTemp(java.lang.Double minTemp) {
+	public void setMinTemp(String minTemp) {
 		this.minTemp = minTemp;
 	}
 
@@ -82,14 +123,14 @@ public class TempRegisterEty extends com.eddy.dao.base.BaseEntity {
 	* 得到 最大温度
 	* @return 最大温度 : java.lang.Double
 	*/
-	public java.lang.Double getMaxTemp() {
+	public String getMaxTemp() {
 		return this.maxTemp;
 	}
 	/**
 	 * 设置 最大温度
 	 * @param maxTemp, 最大温度 : java.lang.Double
 	*/
-	public void setMaxTemp(java.lang.Double maxTemp) {
+	public void setMaxTemp(String maxTemp) {
 		this.maxTemp = maxTemp;
 	}
 
@@ -97,14 +138,14 @@ public class TempRegisterEty extends com.eddy.dao.base.BaseEntity {
 	* 得到 最小分度值
 	* @return 最小分度值 : java.lang.Double
 	*/
-	public java.lang.Double getMiniScale() {
+	public String getMiniScale() {
 		return this.miniScale;
 	}
 	/**
 	 * 设置 最小分度值
 	 * @param miniScale, 最小分度值 : java.lang.Double
 	*/
-	public void setMiniScale(java.lang.Double miniScale) {
+	public void setMiniScale(String miniScale) {
 		this.miniScale = miniScale;
 	}
 

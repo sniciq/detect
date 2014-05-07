@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.ms.dao.mapper.register.DetectTempDao">
+
+	<insert id="insert" parameterType="com.ms.dao.entity.register.DetectTempEty">
+		insert into detecttemp(
+			id,name,temp)
+		values (
+			#{id},#{name},#{temp}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="com.ms.dao.entity.register.DetectTempEty" resultType="com.ms.dao.entity.register.DetectTempEty">
+		SELECT * from detecttemp
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="name != null  and name != ''"> AND name=#{name}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+	</select>
+
+	<update id="updateById" parameterType="com.ms.dao.entity.register.DetectTempEty">
+		UPDATE detecttemp SET
+		<if test="id != null">id=#{id},</if>
+		<if test="name != null">name=#{name},</if>
+		<if test="temp != null">temp=#{temp},</if>
+		 id=#{id}
+		WHERE
+		 id=#{id}
+	</update>
+
+	<select id="selectById" parameterType="int" resultType="com.ms.dao.entity.register.DetectTempEty">
+		select * from detecttemp where id=#{id}
+	</select>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM detecttemp WHERE id=#{id}
+	</delete>
+
+	<select id="selectLimitCount" parameterType="com.ms.dao.entity.register.DetectTempEty" resultType="java.lang.Integer">
+		SELECT count(1) from detecttemp
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="name != null  and name != ''"> AND name=#{name}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+	</select>
+
+	<select id="selectByLimit" parameterType="com.ms.dao.entity.register.DetectTempEty" resultType="com.ms.dao.entity.register.DetectTempEty">
+		SELECT * from detecttemp
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="name != null  and name != ''"> AND name=#{name}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+		<if test="extLimit != null ">
+			<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+			<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+		</if>
+	</select>
+	
+	<select id="selectCustomerNameCount" parameterType="com.ms.dao.entity.register.DetectTempEty" resultType="java.lang.Integer">
+		SELECT count(distinct name) FROM detecttemp 
+		WHERE 1=1 
+		<if test="name != null  and name != ''"> AND name like '%${name}%'</if>
+	</select>
+
+	<select id="selectCustomerNameByLimit" parameterType="com.ms.dao.entity.register.DetectTempEty" resultType="com.ms.dao.entity.register.DetectTempEty">
+		SELECT distinct name FROM detecttemp 
+		WHERE 1=1 
+		<if test="name != null  and name != ''"> AND name like '%${name}%'</if>
+	</select>
+	
+	
+</mapper>

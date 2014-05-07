@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.ms.dao.mapper.register.SampleRecordDao">
+
+	<insert id="insert" parameterType="com.ms.dao.entity.register.SampleRecordEty" useGeneratedKeys="true" statementType="PREPARED" keyProperty="id">
+		insert into samplerecord(
+			detectID,temp1,temp2,temp3,temp4,tempAvg1,tempAvg2,result,result1,result2,createUserID,createDate,tempRegisterId,sampleNo,temp1_input,temp2_input,temp3_input,temp4_input,tempAvg1_str,tempAvg2_str,result1_str,result2_str,result1Type,result2Type)
+		values (
+			#{detectID},#{temp1},#{temp2},#{temp3},#{temp4},#{tempAvg1},#{tempAvg2},#{result},#{result1},#{result2},#{createUserID},#{createDate},#{tempRegisterId},#{sampleNo},#{temp1_input},#{temp2_input},#{temp3_input},#{temp4_input},#{tempAvg1_str},#{tempAvg2_str},#{result1_str},#{result2_str},#{result1Type},#{result2Type}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="com.ms.dao.entity.register.SampleRecordEty" resultType="com.ms.dao.entity.register.SampleRecordEty">
+		SELECT * from samplerecord
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="detectID != null "> AND detectID=#{detectID}</if>
+		<if test="tempRegisterId != null "> AND tempRegisterId=#{tempRegisterId}</if>
+		<if test="sampleNo != null "> AND sampleNo=#{sampleNo}</if>
+		<if test="temp1 != null "> AND temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND tempAvg2=#{tempAvg2}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+	</select>
+
+	<update id="updateById" parameterType="com.ms.dao.entity.register.SampleRecordEty">
+		UPDATE samplerecord SET
+		<if test="id != null">id=#{id},</if>
+		<if test="tempRegisterId != null">tempRegisterId=#{tempRegisterId},</if>
+		<if test="sampleNo != null">sampleNo=#{sampleNo},</if>
+		<if test="detectID != null">detectID=#{detectID},</if>
+		<if test="temp1 != null">temp1=#{temp1},</if>
+		<if test="temp2 != null">temp2=#{temp2},</if>
+		<if test="temp3 != null">temp3=#{temp3},</if>
+		<if test="temp4 != null">temp4=#{temp4},</if>
+		<if test="tempAvg1 != null">tempAvg1=#{tempAvg1},</if>
+		<if test="tempAvg2 != null">tempAvg2=#{tempAvg2},</if>
+		<if test="result1 != null">result1=#{result1},</if>
+		<if test="result2 != null">result2=#{result2},</if>
+		<if test="result != null">result=#{result},</if>
+		<if test="temp1_input != null">temp1_input=#{temp1_input},</if>
+		<if test="temp2_input != null">temp2_input=#{temp2_input},</if>
+		<if test="temp3_input != null">temp3_input=#{temp3_input},</if>
+		<if test="temp4_input != null">temp4_input=#{temp4_input},</if>
+		<if test="tempAvg1_str != null">tempAvg1_str=#{tempAvg1_str},</if>
+		<if test="tempAvg2_str != null">tempAvg2_str=#{tempAvg2_str},</if>
+		<if test="result1_str != null">result1_str=#{result1_str},</if>
+		<if test="result2_str != null">result2_str=#{result2_str},</if>
+		<if test="result1Type != null">result1Type=#{result1Type},</if>
+		<if test="result2Type != null">result2Type=#{result2Type},</if>
+		 id=#{id}
+		WHERE
+		 id=#{id}
+	</update>
+
+	<select id="selectById" parameterType="int" resultType="com.ms.dao.entity.register.SampleRecordEty">
+		select * from samplerecord where id=#{id}
+	</select>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM samplerecord WHERE id=#{id}
+	</delete>
+
+	<select id="selectLimitCount" parameterType="com.ms.dao.entity.register.SampleRecordEty" resultType="java.lang.Integer">
+		SELECT count(1) from samplerecord s 
+		left join tempregister re on s.tempRegisterId = re.id 
+		WHERE 1=1 
+		<if test="id != null "> AND s.id=#{id}</if>
+		<if test="detectID != null "> AND s.detectID=#{detectID}</if>
+		<if test="temp1 != null "> AND s.temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND s.temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND s.temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND s.temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND s.tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND s.tempAvg2=#{tempAvg2}</if>
+		<if test="result != null  and result != ''"> AND s.result=#{result}</if>
+		<if test="startDate != null "> and DATE(s.createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(s.createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+		<if test="tempRegisterTmterNo != null  and tempRegisterTmterNo != ''"> and re.tmterNo=#{tempRegisterTmterNo}</if>
+	</select>
+
+	<select id="selectByLimit" parameterType="com.ms.dao.entity.register.SampleRecordEty" resultType="com.ms.dao.entity.register.SampleRecordEty">
+		SELECT * from samplerecord s
+		left join tempregister re on s.tempRegisterId = re.id
+		WHERE 1=1 
+		<if test="id != null "> AND s.id=#{id}</if>
+		<if test="detectID != null "> AND s.detectID=#{detectID}</if>
+		<if test="temp1 != null "> AND s.temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND s.temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND s.temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND s.temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND s.tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND s.tempAvg2=#{tempAvg2}</if>
+		<if test="result != null  and result != ''"> AND s.result=#{result}</if>
+		<if test="startDate != null "> and DATE(s.createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(s.createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+		<if test="tempRegisterTmterNo != null  and tempRegisterTmterNo != ''"> and re.tmterNo=#{tempRegisterTmterNo}</if>
+		<if test="extLimit != null">
+			<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+			<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+		</if>
+	</select>
+	
+	<select id="selectDataByLimit" parameterType="com.ms.dao.entity.register.SampleRecordEty" resultType="com.ms.controller.register.SampleRecordData">
+		SELECT s.*,
+			u.realName as createUserName,d.experimentNo,d.detectTemp,
+			re.tmterNo as tempRegisterTmterNo,re.sampleNo as tempRegisterSampleNo,re.miniScale as tempRegisterMiniScale,
+			re.tmerName as tempRegisterTmerName
+		from samplerecord s
+		left join user u on s.createUserID = u.id
+		left join detectrecord d on s.detectID = d.id
+		left join tempregister re on s.tempRegisterId = re.id
+		WHERE 1=1 
+		<if test="id != null "> AND s.id=#{id}</if>
+		<if test="detectID != null "> AND s.detectID=#{detectID}</if>
+		<if test="temp1 != null "> AND s.temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND s.temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND s.temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND s.temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND s.tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND s.tempAvg2=#{tempAvg2}</if>
+		<if test="result != null  and result != ''"> AND s.result=#{result}</if>
+		<if test="startDate != null "> and DATE(s.createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(s.createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+		<if test="tempRegisterTmterNo != null  and tempRegisterTmterNo != ''"> and re.tmterNo=#{tempRegisterTmterNo}</if>
+		<if test="extLimit != null">
+			<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+			<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+		</if>
+	</select>
+	
+	<select id="selectDataById" parameterType="int" resultType="com.ms.controller.register.SampleRecordData">
+		SELECT s.*,u.realName as createUserName,d.experimentNo
+		from samplerecord s
+		left join user u on s.createUserID = u.id
+		left join detectrecord d on s.detectID = d.id
+		where s.id=#{id}
+	</select>
+	
+	<select id="selectDataByTempRegister" parameterType="int" resultType="com.ms.controller.register.SampleRecordData">
+		select s.*,
+			u.realName as createUserName,d.experimentNo,d.detectTemp,
+			re.tmterNo as tempRegisterTmterNo,re.sampleNo as tempRegisterSampleNo,re.miniScale as tempRegisterMiniScale,
+			re.tmerName as tempRegisterTmerName 
+		from samplerecord s
+		left join user u on s.createUserID = u.id
+		left join detectrecord d on s.detectID = d.id
+		left join tempregister re on s.tempRegisterId = re.id
+		where s.id in (
+			select max(s.id) id 
+			from samplerecord s
+			left join detectrecord d on s.detectID = d.id
+			WHERE s.tempRegisterId=#{value} 
+			group by detectTemp
+		) order by d.detectTemp asc;
+	</select>
+	
+	<select id="setectDetectedTemp" parameterType="int" resultType="Integer">
+		select d.detectTemp from samplerecord s
+		left join detectrecord d on s.detectID = d.id
+		where tempRegisterId=#{value}
+	</select>
+	
+	<select id="selectTempRegisterCountByTime" parameterType="java.util.Map" resultType="int">
+		select count(1) from samplerecord s
+		left join detectrecord d on s.detectID = d.id
+		where tempRegisterId=#{tempRegisterId} and d.detectTemp=#{detectTemp} and s.createDate >= #{startDate}
+	</select>
+</mapper>

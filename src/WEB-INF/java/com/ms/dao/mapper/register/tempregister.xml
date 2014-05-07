@@ -2,11 +2,11 @@
 <!DOCTYPE mapper    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="com.ms.dao.mapper.register.TempRegisterDao">
 
-	<insert id="insert" parameterType="com.ms.dao.entity.register.TempRegisterEty">
+	<insert id="insert" parameterType="com.ms.dao.entity.register.TempRegisterEty" useGeneratedKeys="true" statementType="PREPARED" keyProperty="id">
 		insert into tempregister(
-			id,unit,tmerName,minTemp,maxTemp,miniScale,manufacturer,tmterNo,sampleNo,certificateNo,result,createUserID,createDate)
+			id,unit,tmerName,minTemp,maxTemp,miniScale,manufacturer,tmterNo,sampleNo,certificateNo,result,createUserID,createDate,tempregisterpointName,immersionType,sensingLiquid,outMax,outMin)
 		values (
-			#{id},#{unit},#{tmerName},#{minTemp},#{maxTemp},#{miniScale},#{manufacturer},#{tmterNo},#{sampleNo},#{certificateNo},#{result},#{createUserID},#{createDate}
+			#{id},#{unit},#{tmerName},#{minTemp},#{maxTemp},#{miniScale},#{manufacturer},#{tmterNo},#{sampleNo},#{certificateNo},#{result},#{createUserID},#{createDate},#{tempregisterpointName},#{immersionType},#{sensingLiquid},#{outMax},#{outMin}
 		)
 	</insert>
 
@@ -26,6 +26,7 @@
 		<if test="result != null  and result != ''"> AND result=#{result}</if>
 		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
 		<if test="createDate != null "> AND createDate=#{createDate}</if>
+		<if test="tempregisterpointName != null "> AND tempregisterpointName=#{tempregisterpointName}</if>
 	</select>
 
 	<update id="updateById" parameterType="com.ms.dao.entity.register.TempRegisterEty">
@@ -43,6 +44,11 @@
 		<if test="result != null">result=#{result},</if>
 		<if test="createUserID != null">createUserID=#{createUserID},</if>
 		<if test="createDate != null">createDate=#{createDate},</if>
+		<if test="tempregisterpointName != null">tempregisterpointName=#{tempregisterpointName},</if>
+		<if test="immersionType != null">immersionType=#{immersionType},</if>
+		<if test="sensingLiquid != null">sensingLiquid=#{sensingLiquid},</if>
+		<if test="outMax != null">outMax=#{outMax},</if>
+		<if test="outMin != null">outMin=#{outMin},</if>
 		 id=#{id}
 		WHERE
 		 id=#{id}
@@ -66,7 +72,7 @@
 		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
 		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
 		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
-		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '%${tmterNo}%'</if>
 		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
 		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
 		<if test="result != null  and result != ''"> AND result=#{result}</if>
@@ -84,7 +90,7 @@
 		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
 		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
 		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
-		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '%${tmterNo}%'</if>
 		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
 		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
 		<if test="result != null  and result != ''"> AND result=#{result}</if>
@@ -95,7 +101,7 @@
 	</select>
 	
 	<select id="selectDataByLimit" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="com.ms.controller.register.TempRegisterData">
-		SELECT t.*,u.userName as createUserName from tempregister t 
+		SELECT t.*,u.realName as createUserName from tempregister t 
 		left join user u on t.createUserID = u.id
 		WHERE 1=1 
 		<if test="id != null "> AND id=#{id}</if>
@@ -105,7 +111,7 @@
 		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
 		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
 		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
-		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '%${tmterNo}%'</if>
 		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
 		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
 		<if test="result != null  and result != ''"> AND result=#{result}</if>
@@ -115,5 +121,74 @@
 		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
 	</select>
 	
+	<select id="selectLimitCountByForm" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="java.lang.Integer">
+		SELECT count(1) from tempregister
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '%${tmterNo}%'</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+		<if test="startDate != null "> and DATE(createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+	</select>
+	
+	<select id="selectDataByLimitByForm" parameterType="com.ms.dao.entity.register.TempRegisterEty" resultType="com.ms.controller.register.TempRegisterData">
+		SELECT t.*,u.realName as createUserName from tempregister t 
+		left join user u on t.createUserID = u.id
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="unit != null  and unit != ''"> AND unit=#{unit}</if>
+		<if test="tmerName != null  and tmerName != ''"> AND tmerName=#{tmerName}</if>
+		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
+		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
+		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
+		<if test="manufacturer != null  and manufacturer != ''"> AND manufacturer=#{manufacturer}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '%${tmterNo}%'</if>
+		<if test="sampleNo != null  and sampleNo != ''"> AND sampleNo=#{sampleNo}</if>
+		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
+		<if test="result != null  and result != ''"> AND result=#{result}</if>
+		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
+		<if test="createDate != null "> AND createDate=#{createDate}</if>
+		<if test="startDate != null "> and DATE(createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+	</select>
+	
+	<select id="selectRecentByTmterNo" resultType="com.ms.dao.entity.register.TempRegisterEty" parameterType="java.lang.String">
+		select te.* from (
+			select max(id) id from tempregister where tmterNo like '%${value}%' 
+			group by tmterNo
+		) t left join tempregister te on te.id = t.id
+		order by te.id desc limit 20;
+	</select>
+	
+	<select id="selectRecentByAccurateTmterNo" resultType="com.ms.dao.entity.register.TempRegisterEty" parameterType="java.lang.String">
+		select te.* from (
+			select max(id) id from tempregister where tmterNo=#{value} 
+		) t left join tempregister te on te.id = t.id;
+	</select>
+	
+	<select id="selectRegistReportData" parameterType="java.util.HashMap" resultType="com.ms.controller.register.RegistReportData">
+		SELECT t.*,u.realName as createUserName from tempregister t 
+		left join user u on t.createUserID = u.id
+		WHERE DATE(createDate) >= DATE(#{startDate}) and DATE(createDate) <![CDATA[ <= ]]> DATE(#{endDate})
+		<if test="sort != null">order by ${sort} ${dir}</if>
+		<if test="sort == null">order by t.unit asc</if>
+	</select>
+	
+	<select id="selectCountByTmterNo" parameterType="java.util.HashMap" resultType="int">
+		select count(1) from tempregister where tmterNo=#{tmterNo} and createDate >= #{startTime}
+		<if test="endTime != null "> AND createDate <![CDATA[ <= ]]> #{endTime}</if>
+	</select>
 	
 </mapper>

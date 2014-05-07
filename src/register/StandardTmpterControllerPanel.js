@@ -1,5 +1,5 @@
 /*
- * comments
+ * 标准器管理
  */
 Ext.namespace('com.ms.controller.register.StandardTmpterControllerPanel');
 com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
@@ -10,7 +10,7 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 			title: '编辑',
 			modal: true,
 			layout:'fit',
-			width:600,
+			width:400,
 			height:400,
 			closeAction:'hide',
 			plain: true,
@@ -22,7 +22,7 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 			labelAlign: 'right',
 			region: 'center',
 			autoScroll:true, 
-			labelWidth: 100,
+			labelWidth: 80,
 			frame: true,
 			xtype: 'fieldset',
 			items: [
@@ -89,7 +89,7 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 			title: '编辑',
 			modal: true,
 			layout:'fit',
-			width:500,
+			width:280,
 			height:200,
 			closeAction:'hide',
 			plain: true,
@@ -147,6 +147,7 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 		var cm = new Ext.grid.ColumnModel([
 			sm,
 			new Ext.grid.RowNumberer(),
+			{header:'ID号', dataIndex:'id', sortable:true, width: 40},
 			{header:'温度计编号', dataIndex:'tmterNo', sortable:true},
 			{header:'证书编号', dataIndex:'certificateNo', sortable:true},
 			{header:'温度范围', dataIndex:'minTemp', sortable:true, renderer:function(v, cellmeta, record, rowIndex, columnIndex, stor) {
@@ -164,6 +165,10 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 			    limit : 'extLimit.limit', 
 			    sort : 'extLimit.sort', 
 			    dir : 'extLimit.dir'   
+			},
+			sortInfo: {
+			    field: 'id',
+			    direction: 'DESC' 
 			},
 			reader: new Ext.data.JsonReader({
 				totalProperty: 'total',
@@ -370,7 +375,7 @@ com.ms.controller.register.StandardTmpterControllerPanel=Ext.extend(Ext.Panel, {
 			colModel: new Ext.grid.ColumnModel([
     			new Ext.grid.RowNumberer(),
     			{header:'温度', dataIndex:'certificateNo', sortable:true},
-    			{header:'修正值', dataIndex:'miniScale', sortable:true},
+    			{header:'修正值', dataIndex:'miniScale', sortable:true}
     		]),
 			viewConfig: {
 				forceFit: true

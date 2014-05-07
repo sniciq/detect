@@ -39,14 +39,14 @@
 					],
 					buttons: [
 						{
-							text: 'Login',
+							text: '登录',
 							id: 'loginBtn',
 							iconCls: 'login',
 							width: 70,
 							handler: doLogin
 						},
 						{
-							text: 'reset',
+							text: '重置',
 							iconCls: 'reset',
 							handler: function() {
 								loginForm.getForm().reset();
@@ -76,12 +76,12 @@
 							if(action.result.result == 'success') {
 								window.location.href = 'main/main.jsp';
 							}
-						},
-						failure:function(form, action){
-			                Ext.Msg.alert('error','login error');
-			                loginForm.getForm().reset();
-			                Ext.getCmp('loginBtn').enable();
-			            }
+							else {
+								Ext.Msg.alert('提示','用户名或者密码错误！');
+				                loginForm.getForm().reset();
+				                Ext.getCmp('loginBtn').enable();
+							}
+						}
 					});
 				}
 				

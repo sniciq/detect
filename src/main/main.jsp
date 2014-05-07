@@ -14,7 +14,7 @@
 		<link rel="Shortcut Icon" href="../images/favicon.ico" />
 		<title>检测系统</title>
 		<link rel="stylesheet" type="text/css" href="${ctx}/ExtJS/resources/css/ext-all.css.gzipfile"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/ExtJS/resources/css/ext-all-notheme.css"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/ExtJS/resources/css/ext-all-notheme.css.gzipfile"/>
 		
 		<link rel="stylesheet" type="text/css" title="blue" href="${ctx}/ExtJS/resources/css/xtheme-blue.css" />
 		<link rel="stylesheet" type="text/css" title="gray" href="${ctx}/ExtJS/resources/css/xtheme-gray.css" />
@@ -53,7 +53,6 @@
 		</script>
 		
 		<script type="text/javascript" src="main.js?v=${version}"></script>
-		
 		<style type="text/css">  
 		    .x-selectable, .x-selectable * {  
 		        -moz-user-select: text!important;  
@@ -63,6 +62,12 @@
 		</style>
 		
 		<style type="text/css">
+			.text-RegisterRecordPanel {font-size:15px;}
+			.text-RegisterRecordPanel .x-form-cb-label {font-weight: bold;font-size:15px;}
+			#RegisterRecordPanel-standardTmpterId {height:20px ;font-size:15px;}
+			#RegisterRecordPanel-tempRegisterId {height:20px ;font-size:15px;}
+			.text-RegisterRecordPanel-combo {height:20px ;font-size:15px;}
+			
 			div.panel_header_icon_title_left {
 			    text-align: center;
 			    vertical-align:middle;

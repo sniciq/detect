@@ -20,6 +20,12 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 			this.nowQuarter =this.nowQuarter + 1;
 		}
 		
+		var nowDate = new Date();
+		var wd = nowDate.getDay();
+		this.firstDayOfThisWeek = nowDate.add(Date.DAY, (1 - wd));
+		this.lastDayOfThisWeek = this.firstDayOfThisWeek.add(Date.DAY, 6);
+		
+		
 		this.commonChart = new yk.stat.office.CommonChart();
 		
 		this.cachedModuls = [];
@@ -44,6 +50,7 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 		
 		this.top = new Ext.Panel({
 			collapseMode:'mini',
+			collapsed: false,
 			region: 'north',
 			frame: false,
 			height: 55,
@@ -61,7 +68,7 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 				{
 					bodyStyle: 'margin-left: 20px;',
 					baseCls:'x-plain',
-					html: '<img height="50px" src="'+globalCtx+'/images/sysname.png" />',
+//					html: '<img height="50px" src="'+globalCtx+'/images/sysname.png" />',
 					border: false,
 					flex:1
 				},
@@ -143,14 +150,7 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 		
 		Ext.Themes = [
 			['默认主题', 'blue'],
-			['灰色主题', 'gray'],
-			['蓝色主题', 'darkblue'],
-			['黑色主题', 'black'],
-			['Vista主题', 'vistablack'],
-			['灰绿主题', 'tp'],
-			['橙色主题', 'orange'],
-			['深紫主题', 'indigo'],
-			['浅蓝主题', 'dftheme']
+			['灰色主题', 'gray']
 		];  
 	  
 		this.themesStore = new Ext.data.SimpleStore({  
@@ -248,6 +248,8 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 		});
 	
 		this.btoolBar = new Ext.Toolbar({
+			collapsible : true,
+			collapseMode:'mini',
 			region: 'south',
 			height: 27,
 			layout: 'hbox',
@@ -311,6 +313,23 @@ ms.office.app = Ext.extend(Ext.util.Observable, {
 	},
 	
 	toolAction: function (btn) {
+	},
+	
+	fullScreen: function() {
+		if(this.top.collapsed)
+			this.top.expand();
+		else
+			this.top.collapse();
+		
+		if(this.MenuTreePanel.collapsed)
+			this.MenuTreePanel.expand();
+		else
+			this.MenuTreePanel.collapse();
+		
+		if(this.btoolBar.hidden)
+			this.btoolBar.show();
+		else
+			this.btoolBar.hide();
 	},
 	
 	/**

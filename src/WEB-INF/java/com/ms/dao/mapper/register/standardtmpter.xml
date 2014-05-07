@@ -50,7 +50,7 @@
 		SELECT count(1) from standardtmpter
 		WHERE 1=1 
 		<if test="id != null "> AND id=#{id}</if>
-		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '${tmterNo}%'</if>
 		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
 		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
 		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
@@ -63,14 +63,16 @@
 		SELECT * from standardtmpter
 		WHERE 1=1 
 		<if test="id != null "> AND id=#{id}</if>
-		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo=#{tmterNo}</if>
+		<if test="tmterNo != null  and tmterNo != ''"> AND tmterNo like '${tmterNo}%'</if>
 		<if test="certificateNo != null  and certificateNo != ''"> AND certificateNo=#{certificateNo}</if>
 		<if test="minTemp != null "> AND minTemp=#{minTemp}</if>
 		<if test="maxTemp != null "> AND maxTemp=#{maxTemp}</if>
 		<if test="miniScale != null "> AND miniScale=#{miniScale}</if>
 		<if test="createUserID != null "> AND createUserID=#{createUserID}</if>
 		<if test="createDate != null "> AND createDate=#{createDate}</if>
-		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
-		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+		<if test="extLimit != null">
+			<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+			<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+		</if>
 	</select>
 </mapper>

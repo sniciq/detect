@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.ms.dao.mapper.register.DetectRecordDao">
+
+	<insert id="insert" parameterType="com.ms.dao.entity.register.DetectRecordEty" useGeneratedKeys="true" statementType="PREPARED" keyProperty="id">
+		insert into detectrecord(
+			standardTmpterId,experimentNo,equipmentNo,temp,humidity,address,createDate,createUserId,detectTemp,temp1,temp2,temp3,temp4,tempAvg1,tempAvg2,tempReal,detectBasis,temp1_input,temp2_input,temp3_input,temp4_input,tempAvg1_str,tempAvg2_str,tempReal_str)
+		values (
+			#{standardTmpterId},#{experimentNo},#{equipmentNo},#{temp},#{humidity},#{address},#{createDate},#{createUserId},#{detectTemp},#{temp1},#{temp2},#{temp3},#{temp4},#{tempAvg1},#{tempAvg2},#{tempReal},#{detectBasis},#{temp1_input},#{temp2_input},#{temp3_input},#{temp4_input},#{tempAvg1_str},#{tempAvg2_str},#{tempReal_str}
+		)
+	</insert>
+
+	<select id="selectByEntity" parameterType="com.ms.dao.entity.register.DetectRecordEty" resultType="com.ms.dao.entity.register.DetectRecordEty">
+		SELECT * from detectrecord
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="standardTmpterId != null "> AND standardTmpterId=#{standardTmpterId}</if>
+		<if test="experimentNo != null  and experimentNo != ''"> AND experimentNo=#{experimentNo}</if>
+		<if test="equipmentNo != null  and equipmentNo != ''"> AND equipmentNo=#{equipmentNo}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+		<if test="humidity != null "> AND humidity=#{humidity}</if>
+		<if test="address != null  and address != ''"> AND address=#{address}</if>
+		<if test="createDate != null  and createDate != ''"> AND createDate=#{createDate}</if>
+		<if test="detectTemp != null "> AND detectTemp=#{detectTemp}</if>
+		<if test="temp1 != null "> AND temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND tempAvg2=#{tempAvg2}</if>
+		<if test="tempReal != null "> AND tempReal=#{tempReal}</if>
+		<if test="detectBasis != null  and detectBasis != ''"> AND detectBasis=#{detectBasis}</if>
+	</select>
+
+	<update id="updateById" parameterType="com.ms.dao.entity.register.DetectRecordEty">
+		UPDATE detectrecord SET
+		<if test="id != null">id=#{id},</if>
+		<if test="standardTmpterId != null">standardTmpterId=#{standardTmpterId},</if>
+		<if test="experimentNo != null">experimentNo=#{experimentNo},</if>
+		<if test="equipmentNo != null">equipmentNo=#{equipmentNo},</if>
+		<if test="temp != null">temp=#{temp},</if>
+		<if test="humidity != null">humidity=#{humidity},</if>
+		<if test="address != null">address=#{address},</if>
+		<if test="createDate != null">createDate=#{createDate},</if>
+		<if test="detectTemp != null">detectTemp=#{detectTemp},</if>
+		<if test="temp1 != null">temp1=#{temp1},</if>
+		<if test="temp2 != null">temp2=#{temp2},</if>
+		<if test="temp3 != null">temp3=#{temp3},</if>
+		<if test="temp4 != null">temp4=#{temp4},</if>
+		<if test="tempAvg1 != null">tempAvg1=#{tempAvg1},</if>
+		<if test="tempAvg2 != null">tempAvg2=#{tempAvg2},</if>
+		<if test="tempReal != null">tempReal=#{tempReal},</if>
+		<if test="detectBasis != null">detectBasis=#{detectBasis},</if>
+		<if test="temp1_input != null">temp1_input=#{temp1_input},</if>
+		<if test="temp2_input != null">temp2_input=#{temp2_input},</if>
+		<if test="temp3_input != null">temp3_input=#{temp3_input},</if>
+		<if test="temp4_input != null">temp4_input=#{temp4_input},</if>
+		<if test="tempAvg1_str != null">tempAvg1_str=#{tempAvg1_str},</if>
+		<if test="tempAvg2_str != null">tempAvg2_str=#{tempAvg2_str},</if>
+		<if test="tempReal_str != null">tempReal_str=#{tempReal_str},</if>
+		 id=#{id}
+		WHERE
+		 id=#{id}
+	</update>
+
+	<select id="selectById" parameterType="int" resultType="com.ms.dao.entity.register.DetectRecordEty">
+		select * from detectrecord where id=#{id}
+	</select>
+
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM detectrecord WHERE id=#{id}
+	</delete>
+
+	<select id="selectLimitCount" parameterType="com.ms.dao.entity.register.DetectRecordEty" resultType="java.lang.Integer">
+		SELECT count(1) from detectrecord
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="standardTmpterId != null "> AND standardTmpterId=#{standardTmpterId}</if>
+		<if test="experimentNo != null  and experimentNo != ''"> AND experimentNo like '${experimentNo}%'</if>
+		<if test="equipmentNo != null  and equipmentNo != ''"> AND equipmentNo=#{equipmentNo}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+		<if test="humidity != null "> AND humidity=#{humidity}</if>
+		<if test="address != null  and address != ''"> AND address=#{address}</if>
+		<if test="createDate != null  and createDate != ''"> AND createDate=#{createDate}</if>
+		<if test="detectTemp != null "> AND detectTemp=#{detectTemp}</if>
+		<if test="temp1 != null "> AND temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND tempAvg2=#{tempAvg2}</if>
+		<if test="tempReal != null "> AND tempReal=#{tempReal}</if>
+		<if test="detectBasis != null  and detectBasis != ''"> AND detectBasis=#{detectBasis}</if>
+	</select>
+
+	<select id="selectByLimit" parameterType="com.ms.dao.entity.register.DetectRecordEty" resultType="com.ms.dao.entity.register.DetectRecordEty">
+		SELECT * from detectrecord
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="standardTmpterId != null "> AND standardTmpterId=#{standardTmpterId}</if>
+		<if test="experimentNo != null  and experimentNo != ''"> AND experimentNo like '${experimentNo}%'</if>
+		<if test="equipmentNo != null  and equipmentNo != ''"> AND equipmentNo=#{equipmentNo}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+		<if test="humidity != null "> AND humidity=#{humidity}</if>
+		<if test="address != null  and address != ''"> AND address=#{address}</if>
+		<if test="createDate != null  and createDate != ''"> AND createDate=#{createDate}</if>
+		<if test="detectTemp != null "> AND detectTemp=#{detectTemp}</if>
+		<if test="temp1 != null "> AND temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND tempAvg2=#{tempAvg2}</if>
+		<if test="tempReal != null "> AND tempReal=#{tempReal}</if>
+		<if test="detectBasis != null  and detectBasis != ''"> AND detectBasis=#{detectBasis}</if>
+		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+	</select>
+	
+	<select id="selectLimitCountByForm" parameterType="com.ms.controller.register.DetectRecordForm" resultType="java.lang.Integer">
+		SELECT count(1) from detectrecord
+		WHERE 1=1 
+		<if test="id != null "> AND id=#{id}</if>
+		<if test="standardTmpterId != null "> AND standardTmpterId=#{standardTmpterId}</if>
+		<if test="experimentNo != null  and experimentNo != ''"> AND experimentNo like '${experimentNo}%'</if>
+		<if test="equipmentNo != null  and equipmentNo != ''"> AND equipmentNo=#{equipmentNo}</if>
+		<if test="temp != null "> AND temp=#{temp}</if>
+		<if test="humidity != null "> AND humidity=#{humidity}</if>
+		<if test="address != null  and address != ''"> AND address=#{address}</if>
+		<if test="createDate != null  and createDate != ''"> AND createDate=#{createDate}</if>
+		<if test="detectTemp != null "> AND detectTemp=#{detectTemp}</if>
+		<if test="temp1 != null "> AND temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND tempAvg2=#{tempAvg2}</if>
+		<if test="tempReal != null "> AND tempReal=#{tempReal}</if>
+		<if test="detectBasis != null  and detectBasis != ''"> AND detectBasis=#{detectBasis}</if>
+		<if test="startDate != null "> and DATE(createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+	</select>
+	
+	<select id="selectDataByLimit" parameterType="com.ms.controller.register.DetectRecordForm" resultType="com.ms.controller.register.DetectRecordData">
+		SELECT d.*,u.realName as createUserName,s.tmterNo 
+		from detectrecord d 
+		left join user u on d.createUserID = u.id
+		left join standardtmpter s on d.standardTmpterId = s.id
+		WHERE 1=1 
+		<if test="id != null "> AND d.id=#{id}</if>
+		<if test="standardTmpterId != null "> AND d.standardTmpterId=#{standardTmpterId}</if>
+		<if test="experimentNo != null  and experimentNo != ''"> AND d.experimentNo like '${experimentNo}%'</if>
+		<if test="equipmentNo != null  and equipmentNo != ''"> AND d.equipmentNo=#{equipmentNo}</if>
+		<if test="temp != null "> AND d.temp=#{temp}</if>
+		<if test="humidity != null "> AND d.humidity=#{humidity}</if>
+		<if test="address != null  and address != ''"> AND d.address=#{address}</if>
+		<if test="createDate != null  and createDate != ''"> AND d.createDate=#{createDate}</if>
+		<if test="detectTemp != null "> AND d.detectTemp=#{detectTemp}</if>
+		<if test="temp1 != null "> AND d.temp1=#{temp1}</if>
+		<if test="temp2 != null "> AND d.temp2=#{temp2}</if>
+		<if test="temp3 != null "> AND d.temp3=#{temp3}</if>
+		<if test="temp4 != null "> AND d.temp4=#{temp4}</if>
+		<if test="tempAvg1 != null "> AND d.tempAvg1=#{tempAvg1}</if>
+		<if test="tempAvg2 != null "> AND d.tempAvg2=#{tempAvg2}</if>
+		<if test="tempReal != null "> AND d.tempReal=#{tempReal}</if>
+		<if test="detectBasis != null  and detectBasis != ''"> AND d.detectBasis=#{detectBasis}</if>
+		<if test="startDate != null "> and DATE(d.createDate) >= DATE(#{startDate})</if>
+		<if test="endDate != null "> and DATE(d.createDate) <![CDATA[ <= ]]> DATE(#{endDate})</if>
+		<if test="extLimit.sort != null">order by ${extLimit.sort} ${extLimit.dir}</if>
+		<if test="extLimit.limit != null"> limit ${extLimit.start}, ${extLimit.limit}</if>
+	</select>
+	
+	<select id="selectDataById" parameterType="int" resultType="com.ms.controller.register.DetectRecordData">
+		SELECT d.*,u.realName as createUserName,s.tmterNo,s.miniScale as standardTmpter_miniScale,sc.correction as standardTmpterCorrection
+		from detectrecord d 
+		left join user u on d.createUserID = u.id
+		left join standardtmpter s on d.standardTmpterId = s.id
+		left join standardtmptercorrection sc on d.standardTmpterId=sc.standardTmpterId and d.detectTemp=sc.value
+		WHERE d.id=#{id}
+	</select>
+	
+	<select id="selectTodayCount" parameterType="String" resultType="int">
+		select count(1) from detectrecord where createDate >= #{value}
+	</select>
+</mapper>

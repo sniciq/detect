@@ -1,5 +1,5 @@
 /*
- * comments
+ * 修正值管理
  */
 Ext.namespace('com.ms.controller.register.CorrectionPanel');
 com.ms.controller.register.CorrectionPanel=Ext.extend(Ext.Panel, {
@@ -11,7 +11,7 @@ com.ms.controller.register.CorrectionPanel=Ext.extend(Ext.Panel, {
 			labelAlign: 'right',
 			region: 'north',
 			autoScroll:true, 
-			height: 60,
+			height: 100,
 			frame: true,
 			layout: 'hbox',
 			layoutConfig: {
@@ -21,18 +21,20 @@ com.ms.controller.register.CorrectionPanel=Ext.extend(Ext.Panel, {
             defaults:{margins:'0 5 0 0'},
             items: [
 				{
-					width: 200, layout: 'form',labelWidth: 80,
+					width: 120, layout: 'form',labelWidth: 40,
 					items: [
 						{xtype: 'numberfield',name: 'value', fieldLabel: '计数值',anchor : '95%'}
 					]
 				},
 				{
-					width: 200, layout: 'form',labelWidth: 80,
+					width: 120, layout: 'form',labelWidth: 40,
 					items: [
 						{xtype: 'numberfield',name: 'correction', fieldLabel: '修正值',anchor : '95%'}
 					]
-				},
-				{
+				}				
+			],
+     	    buttons: [
+              {
 					xtype: 'button',
 					text: '保存',
 					width: 70,
@@ -49,7 +51,7 @@ com.ms.controller.register.CorrectionPanel=Ext.extend(Ext.Panel, {
 							params: {standardTmpterId: this.standardTmpterId},
 							success: function(form, action) {
 								if(action.result.result == 'success') {
-									Ext.MessageBox.alert('结果', '保存成功！');
+									//Ext.MessageBox.alert('结果', '保存成功！');
 									form.reset();
 									grid.getStore().reload();
 								}
@@ -74,7 +76,7 @@ com.ms.controller.register.CorrectionPanel=Ext.extend(Ext.Panel, {
 						editForm.form.reset();
 					}
 				}
-			]
+        	]
 		});
 		
 		var sm = new Ext.grid.CheckboxSelectionModel({singleSelect:true});

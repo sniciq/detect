@@ -3,7 +3,7 @@ public class StandardTmpterCorrectionEty extends com.eddy.dao.base.BaseEntity {
 
 	private Integer id;
 	private Integer standardTmpterId;	//标准器ID
-	private java.lang.Double value;	//计数值
+	private Double value;	//计数值
 	private java.lang.Double correction;	//修正值
 
 	public Integer getId() {
@@ -32,14 +32,14 @@ public class StandardTmpterCorrectionEty extends com.eddy.dao.base.BaseEntity {
 	* 得到 计数值
 	* @return 计数值 : java.lang.Double
 	*/
-	public java.lang.Double getValue() {
+	public Double getValue() {
 		return this.value;
 	}
 	/**
 	 * 设置 计数值
 	 * @param value, 计数值 : java.lang.Double
 	*/
-	public void setValue(java.lang.Double value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 

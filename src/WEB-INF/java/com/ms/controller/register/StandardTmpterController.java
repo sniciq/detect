@@ -23,6 +23,10 @@ import com.ms.dao.entity.basic.UserEty;
 import com.ms.dao.entity.register.StandardTmpterEty;
 import com.ms.dao.mapper.register.StandardTmpterDao;
 
+/**
+ * 标准器管理
+ *
+ */
 @Controller
 @RequestMapping("/register/StandardTmpterController/")
 public class StandardTmpterController {
@@ -39,8 +43,7 @@ private Logger logger = Logger.getLogger(StandardTmpterController.class);
 		JSONObject retObj = JSONGrid.toJSon(list, count, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 		return retObj.toString();
 	}
-
-
+	
 	@RequestMapping(value="save.sdo")
 	public @ResponseBody String save(HttpServletRequest request, StandardTmpterEty standardTmpterEty) {
 		UserEty userEty = (UserEty) request.getSession().getAttribute("UserEty");

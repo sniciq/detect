@@ -7,6 +7,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.ibatis.ognl.OgnlRuntime;
+
 public class MsServletContextListener implements ServletContextListener {
 
 	@Override
@@ -26,6 +28,8 @@ public class MsServletContextListener implements ServletContextListener {
 		
 		//设置mybatis使用Log4J做为日志记录
 		org.apache.ibatis.logging.LogFactory.useLog4JLogging();
+		
+		OgnlRuntime.setSecurityManager(null);
 	}
 
 }

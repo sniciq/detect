@@ -1,9 +1,14 @@
 package com.ms.dao.entity.basic;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserEty extends com.eddy.dao.base.BaseEntity {
+public class UserEty extends com.eddy.dao.base.BaseEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6744769542579430497L;
 	private Integer id;
 	private String userName;
 	private String password;

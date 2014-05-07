@@ -2,6 +2,10 @@ package com.ms.dao.entity.register;
 
 import java.util.Date;
 
+/**
+ * 标准器
+ *
+ */
 public class StandardTmpterEty extends com.eddy.dao.base.BaseEntity {
 
 	private Integer id;
