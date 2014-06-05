@@ -33,6 +33,8 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
                     		blur: {
                     			scope: this,
                     			fn: function(txt) {
+                    				this.temp34Str.hide();
+                    				this.temp12Str.hide();
                         			if(txt.getValue() == '') return;
                         			this.checkTmterNo(txt.getValue());
                         		}
@@ -90,7 +92,7 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 //						}
 //					}
                 ]},
-                {items:[{ ref: '../temp12Str',xtype: 'textfield', fieldLabel: '读数',name: 'temp12Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
+                {items:[{ ref: '../temp12Str',hidden:true,xtype: 'textfield', fieldLabel: '读数',name: 'temp12Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
                 {items:[{ ref: '../temp34Str',hidden:true,xtype: 'textfield', fieldLabel: '湿度',name: 'temp34Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
                 {width:60,items:[{ ref: '../infor',hidden:true,xtype:'panel',html:'<font style="color:#FF0000">重复录入</font>'}]}
             ]
@@ -140,6 +142,7 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 						this.temp34Str.hide();
 					}
 					this.getForm().findField('tempRegisterId').setValue(obj.id);
+					this.temp12Str.show();
 				}
 				
 				if(obj.thisWeekCount > 0) {
