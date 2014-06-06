@@ -259,7 +259,7 @@ com.ms.controller.register.RegisterRecordPanel=Ext.extend(Ext.Panel, {
 							if(currentTab && newTab) {
 								if(currentTab.title == '实验信息及标准器信息' && newTab.title == '样本信息录入') {
 									var dt = detectForm.getForm().findField('detectTemp').getValue();
-									if(dt == '') {
+									if(dt === '') {
 										Ext.MessageBox.show({title: '提示',msg: "请先录入名义温度",buttons: Ext.Msg.OK,icon: Ext.MessageBox.ERROR});
 										return false;
 									}

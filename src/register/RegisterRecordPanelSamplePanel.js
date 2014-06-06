@@ -27,70 +27,20 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
                     {xtype: 'textfield',hidden: true,anchor: '100%',name:'tempRegisterId'},
                     {	
                     	xtype: 'textfield', fieldLabel: '登记编号',allowBlank : false,name: 'tmterNo',
-                    	labelStyle: 'font-weight:bold;font-size:15px;',
+                    	labelStyle: 'font-weight:bold;font-size:15px;',enableKeyEvents:true,
                     	cls : 'text-RegisterRecordPanel',
                     	listeners: {
-                    		blur: {
-                    			scope: this,
-                    			fn: function(txt) {
-                    				this.temp34Str.hide();
-                    				this.temp12Str.hide();
-                        			if(txt.getValue() == '') return;
-                        			this.checkTmterNo(txt.getValue());
-                        		}
+                    		scope: this,
+                    		change: function(tf, newValue, oldValue) {
+                    			this.doCheckTmterNo(newValue);
+                    		},
+                    		keydown: function(tf, e ) {
+                    			if(e.getKey() == 13) {
+	                    			this.doCheckTmterNo(tf.getValue());
+                    			}
                     		}
                     	}
                     }
-//					{
-//						xtype: 'combo',
-//						labelStyle: 'font-weight:bold;font-size:15px;',
-//						height: f_height,
-//						allowBlank : true,
-//						cls : 'text-RegisterRecordPanel-combo',
-//						name: 'tempRegisterId', fieldLabel: '编号',anchor : '99%',
-//						emptyText: '输入登记编号检索...',
-//						hiddenName: 'tempRegisterId',
-//						triggerAction: 'all', 
-//						forceSelection: true,
-//						editable: true,
-//						hideTrigger: true,
-//						anchor : '99%',
-//						mode: 'local',
-//						valueField: 'id',
-//						displayField: 'tmterNo',
-//						store: new Ext.data.Store({
-//							proxy: new Ext.data.HttpProxy({url: '../register/TempRegisterController/selectRecentByTmterNo.sdo'}),
-//							reader: new Ext.data.JsonReader({
-//								totalProperty: 'total',
-//								idProperty:'id',
-//								root: 'invdata',
-//								fields: [
-//									{name: 'id'},
-//									{name: 'tmterNo'},
-//									{name: 'tmerName'},
-//									{name: 'miniScale'}
-//								]
-//							})
-//						}),
-//						listeners : {
-//							keyUp: function(comboBox, e){
-//								if(e.getKey() == 16 || e.getKey() == 17 || e.getKey() == 18 || e.getKey() == 20 || e.getKey() == 27 || e.getKey() == 13 || e.getKey() == 37 || e.getKey() == 38 || e.getKey() == 39 || e.getKey() == 40)
-//									return;
-//								comboBox.store.load({params: {tmterNo: comboBox.el.dom.value, "extLimit.start":0, "extLimit.limit":20, 'extLimit.sort': 'tmterNo', 'extLimit.dir': 'DESC'}});
-//							},
-//							select: {
-//								scope: this,
-//								fn: function(combo, record, index) {
-//									if(record.data.tmerName == '干湿球温度计') {
-//										this.temp34Str.show();
-//									}
-//									else {
-//										this.temp34Str.hide();
-//									}
-//								}
-//							}
-//						}
-//					}
                 ]},
                 {items:[{ ref: '../temp12Str',hidden:true,xtype: 'textfield', fieldLabel: '读数',name: 'temp12Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
                 {items:[{ ref: '../temp34Str',hidden:true,xtype: 'textfield', fieldLabel: '湿度',name: 'temp34Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
@@ -103,8 +53,17 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 	initMethod: function() {
 	},
 	
+	doCheckTmterNo: function(tmterNo) {
+		this.temp34Str.hide();
+		this.temp12Str.hide();
+		if(tmterNo == ''){ 
+			return;
+		}
+		this.checkTmterNo(tmterNo);
+	},
 	checkTmterNo: function(tmterNo) {
 		var detectTemp = this.detectForm.getForm().findField('detectTemp').getValue();
+		this.el.mask('正在验证，请等待...');
 		Ext.Ajax.request({
 			url: '../register/TempRegisterController/selectRecentByAccurateTmterNo.sdo',
 			method: 'post',
@@ -113,6 +72,7 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 			scope: this,
 			params: {tmterNo: tmterNo, detectTemp:detectTemp},
 			success:function(resp){
+				this.el.unmask();
 				this.getForm().findField('tempRegisterId').setValue('');
 				var obj=Ext.util.JSON.decode(resp.responseText);
 				if(obj.result == 'error') {
@@ -143,6 +103,7 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 					}
 					this.getForm().findField('tempRegisterId').setValue(obj.id);
 					this.temp12Str.show();
+					this.temp12Str.focus();
 				}
 				
 				if(obj.thisWeekCount > 0) {
