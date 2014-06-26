@@ -540,17 +540,30 @@ public class SampleRecordController {
 	 */
 	private SampleRecordEty createSampleRecordEty(JSONObject jsonObj, double tempReal, double detectTemp) throws Exception {
 		SampleRecordEty sampleEty = new SampleRecordEty();
-		if(!jsonObj.containsKey("tempRegisterId") || StringUtils.isEmpty(jsonObj.getString("tempRegisterId"))) {
+//		if(!jsonObj.containsKey("tempRegisterId") || StringUtils.isEmpty(jsonObj.getString("tempRegisterId"))) {
+//			return null;
+//		}
+//		
+//		int TempRegisterId = jsonObj.getInt("tempRegisterId");
+//		TempRegisterEty tempRegisterEty = tempRegisterDao.selectById(TempRegisterId);
+//		if(tempRegisterEty == null) {
+//			throw new Exception("无法获取检测样本，请确认输入的样本编号是否正确。");
+//		}
+//		
+		
+		if(!jsonObj.containsKey("tmterNo") || StringUtils.isEmpty(jsonObj.getString("tmterNo"))) {
 			return null;
 		}
 		
-		int TempRegisterId = jsonObj.getInt("tempRegisterId");
-		TempRegisterEty tempRegisterEty = tempRegisterDao.selectById(TempRegisterId);
+		//改为根据编号返回ID
+		String tmterNo = jsonObj.getString("tmterNo");
+		TempRegisterEty tempRegisterEty = tempRegisterDao.selectRecentByAccurateTmterNo(tmterNo);
 		if(tempRegisterEty == null) {
 			throw new Exception("无法获取检测样本，请确认输入的样本编号是否正确。");
 		}
 		
-		sampleEty.setTempRegisterId(TempRegisterId);
+		sampleEty.setTempRegisterId(tempRegisterEty.getId());
+		
 		int sampleNo = jsonObj.getInt("sampleNo");
 		if(!jsonObj.containsKey("temp12Str") || StringUtils.isEmpty(jsonObj.getString("temp12Str"))) {
 			throw new Exception("样本: " + sampleNo + " 读数输入错误！");

@@ -24,7 +24,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
             items:[
                 {width: 80,items:[{ xtype:'numberfield',fieldLabel: '序号', readOnly:true, name: 'sampleNo',labelStyle: 'font-weight:bold;font-size:15px;',anchor : '99%',value:this.sampleNo, cls : 'text-RegisterRecordPanel', allowBlank : true}]},
                 {labelWidth: 80,items:[
-                    {xtype: 'textfield',hidden: true,anchor: '100%',name:'tempRegisterId'},
                     {	
                     	xtype: 'textfield', fieldLabel: '登记编号',allowBlank : false,name: 'tmterNo',
                     	labelStyle: 'font-weight:bold;font-size:15px;',enableKeyEvents:true,
@@ -33,16 +32,11 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
                     		scope: this,
                     		change: function(tf, newValue, oldValue) {
                     			this.doCheckTmterNo(newValue);
-                    		},
-                    		keydown: function(tf, e ) {
-                    			if(e.getKey() == 13) {
-	                    			this.doCheckTmterNo(tf.getValue());
-                    			}
                     		}
                     	}
                     }
                 ]},
-                {items:[{ ref: '../temp12Str',hidden:true,xtype: 'textfield', fieldLabel: '读数',name: 'temp12Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
+                {items:[{ ref: '../temp12Str',hidden:false,xtype: 'textfield', fieldLabel: '读数',name: 'temp12Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
                 {items:[{ ref: '../temp34Str',hidden:true,xtype: 'textfield', fieldLabel: '湿度',name: 'temp34Str', labelStyle: 'background-color:#00FFFF;font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]},
                 {width:60,items:[{ ref: '../infor',hidden:true,xtype:'panel',html:'<font style="color:#FF0000">重复录入</font>'}]}
             ]
@@ -55,7 +49,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 	
 	doCheckTmterNo: function(tmterNo) {
 		this.temp34Str.hide();
-		this.temp12Str.hide();
 		if(tmterNo == ''){ 
 			return;
 		}
@@ -63,7 +56,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 	},
 	checkTmterNo: function(tmterNo) {
 		var detectTemp = this.detectForm.getForm().findField('detectTemp').getValue();
-		this.el.mask('正在验证，请等待...');
 		Ext.Ajax.request({
 			url: '../register/TempRegisterController/selectRecentByAccurateTmterNo.sdo',
 			method: 'post',
@@ -72,8 +64,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 			scope: this,
 			params: {tmterNo: tmterNo, detectTemp:detectTemp},
 			success:function(resp){
-				this.el.unmask();
-				this.getForm().findField('tempRegisterId').setValue('');
 				var obj=Ext.util.JSON.decode(resp.responseText);
 				if(obj.result == 'error') {
 					var info = '' || obj.info;
@@ -101,9 +91,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 					else {
 						this.temp34Str.hide();
 					}
-					this.getForm().findField('tempRegisterId').setValue(obj.id);
-					this.temp12Str.show();
-					this.temp12Str.focus();
 				}
 				
 				if(obj.thisWeekCount > 0) {
@@ -117,7 +104,6 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 	},
 	
 	resetData: function() {
-		this.getForm().findField('tempRegisterId').setValue('');
 		this.getForm().findField('tmterNo').setValue('');
 		this.getForm().findField('temp12Str').setValue('');
 		this.getForm().findField('temp34Str').setValue('');
@@ -127,9 +113,9 @@ com.ms.controller.register.RegisterRecordPanelSamplePanel=Ext.extend(Ext.FormPan
 	getData: function() {
 		var data = {};
 		data.sampleNo = this.sampleNo;
+		data.tmterNo  = this.getForm().findField('tmterNo').getValue();
 		data.temp12Str = this.getForm().findField('temp12Str').getValue();
 		data.temp34Str = this.getForm().findField('temp34Str').getValue();
-		data.tempRegisterId = this.getForm().findField('tempRegisterId').getValue();
 		return data;
 	}
 });
