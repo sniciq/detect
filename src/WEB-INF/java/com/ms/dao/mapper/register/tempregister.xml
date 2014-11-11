@@ -178,6 +178,12 @@
 		) t left join tempregister te on te.id = t.id;
 	</select>
 	
+	<select id="selectRecentSinceMonday" resultType="com.ms.dao.entity.register.TempRegisterEty" parameterType="java.util.Map">
+		select te.* from (
+			select max(id) id from tempregister where tmterNo=#{tmterNo} and DATE(createDate) >= DATE(#{monday})
+		) t left join tempregister te on te.id = t.id;
+	</select>
+	
 	<select id="selectRegistReportData" parameterType="java.util.HashMap" resultType="com.ms.controller.register.RegistReportData">
 		SELECT t.*,u.realName as createUserName from tempregister t 
 		left join user u on t.createUserID = u.id

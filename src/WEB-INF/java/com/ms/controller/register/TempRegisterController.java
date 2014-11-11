@@ -44,6 +44,7 @@ import com.ms.dao.mapper.register.DetectTempDao;
 import com.ms.dao.mapper.register.SampleRecordDao;
 import com.ms.dao.mapper.register.TempRegisterDao;
 import com.ms.dao.mapper.register.TempRegisterPointDao;
+import com.ms.util.DateUtil;
 
 /**
  * 样品登记
@@ -81,9 +82,14 @@ public class TempRegisterController {
 	 */
 	@RequestMapping(value="selectRecentByAccurateTmterNo.sdo")
 	public @ResponseBody String selectRecentByAccurateTmterNo(@RequestParam("tmterNo") String tmterNo, @RequestParam("detectTemp") int detectTemp) throws Exception {
-		TempRegisterEty data = tempRegisterDao.selectRecentByAccurateTmterNo(tmterNo);
+		
+		Date monday = DateUtil.getMonday(new Date());
+		Map<String, String> tMap = new HashMap<String, String>();
+		tMap.put("tmterNo", tmterNo);
+		tMap.put("monday", new SimpleDateFormat("yyyy-MM-dd").format(monday));
+		TempRegisterEty data = tempRegisterDao.selectRecentSinceMonday(tMap);
 		if(data == null) {
-			throw new Exception("没有找到编号为:" + tmterNo + "的记录!请检测编号是否正确。");
+			throw new Exception("没有找到本周编号为:" + tmterNo + "的记录!请检测编号是否正确。");
 		}
 		
 		//查询本周内有没有做过实验

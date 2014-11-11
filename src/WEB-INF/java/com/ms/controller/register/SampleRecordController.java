@@ -3,7 +3,9 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +16,6 @@ import net.sf.json.JsonConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,7 @@ import com.ms.dao.mapper.register.StandardTmpterCorrectionDao;
 import com.ms.dao.mapper.register.StandardTmpterDao;
 import com.ms.dao.mapper.register.TempRegisterDao;
 import com.ms.dao.mapper.register.TempRegisterPointDao;
+import com.ms.util.DateUtil;
 import com.ms.util.MiniScaleUtil;
 
 /**
@@ -185,201 +187,6 @@ public class SampleRecordController {
 		ss = ss.substring(ss.length() -3 , ss.length());
 		String experimentNo = new SimpleDateFormat("yyyyMMdd").format(nowDate) + ss;
 		return experimentNo;
-	}
-	
-	/**
-	 * 样本登记
-	 * @return
-	 */
-	@RequestMapping(value="registSample.sdo")
-	public @ResponseBody String registSample(HttpServletRequest request, RegistSampleForm form) throws Exception {
-		JSONObject obj = new JSONObject();
-		
-		//----------------------验证及计算数据
-		String standardTempStr = form.getStandardTempStr();
-		if(StringUtils.isEmpty(standardTempStr)) {
-			throw new Exception("标准器读数输入错误!");
-		}
-		String[] temps = StringUtils.split(standardTempStr, ",");
-		if(temps.length != 2) {
-			throw new Exception("标准器读数输入错误!");
-		}
-		try {
-			form.setStandardTemp1_input(temps[0].replace("+", ""));
-			form.setStandardTemp2_input(temps[1].replace("+", ""));
-			form.setStandardTemp1(Double.valueOf(temps[0]));
-			form.setStandardTemp2(Double.valueOf(temps[1]));
-		}
-		catch (Exception e) {
-			throw new Exception("标准器读数输入错误!");
-		}
-		
-		StandardTmpterEty st = standardTmpterDao.selectById(form.getStandardTmpterId());
-		if(st == null) {
-			throw new Exception("无法得到标准器数据，请确认输入标准器是否正确！");
-		}
-
-		StandardTmpterCorrectionEty stcsearchEty = new StandardTmpterCorrectionEty();
-		stcsearchEty.setStandardTmpterId(form.getStandardTmpterId());
-		stcsearchEty.setValue(form.getDetectTemp());
-		List<StandardTmpterCorrectionEty> stcs = standardTmpterCorrectionDao.selectByEntity(stcsearchEty);
-		if(stcs.size() != 1) {
-			throw new Exception("无法获取标准器修正值！");
-		}
-		StandardTmpterCorrectionEty stc = stcs.get(0);
-		
-		//计算标准器平均读数及槽温
-		double av = (form.getStandardTemp1() + form.getStandardTemp2()) / 2 * st.getMiniScale() * 0.1;
-		double tempReal = av + stc.getCorrection();
-		
-		av = MiniScaleUtil.convertWithMiniScale(av, st.getMiniScale());
-		tempReal = MiniScaleUtil.convertWithMiniScale(tempReal, st.getMiniScale());
-		
-		form.setStandardTempAvg1(av);
-		form.setTempReal(tempReal);
-		form.setStandardTempAvg1_str(MiniScaleUtil.stringValueAsMiniScale(av, st.getMiniScale()));
-		form.setTempReal_str(MiniScaleUtil.stringValueAsMiniScale(tempReal, st.getMiniScale()));
-		
-		//样本数据
-		String tempStr12 = form.getTemp12Str();
-		if(StringUtils.isEmpty(tempStr12)) {
-			throw new Exception("样本读数输入错误!");
-		}
-		temps = StringUtils.split(tempStr12, ",");
-		if(temps.length != 2) {
-			throw new Exception("样本读数输入错误!");
-		}
-		try {
-			form.setTemp1_input(temps[0].replace("+", ""));
-			form.setTemp2_input(temps[1].replace("+", ""));
-			form.setTemp1(Double.valueOf(temps[0]));
-			form.setTemp2(Double.valueOf(temps[1]));
-		}
-		catch (Exception e) {
-			throw new Exception("样本读数输入错误!");
-		}
-		
-		TempRegisterEty tempRegisterEty = tempRegisterDao.selectById(form.getTempRegisterId());
-		if(tempRegisterEty == null) {
-			throw new Exception("无法获取检测样本，请确认输入的样本编号是否正确。");
-		}
-		
-//		TempRegisterPointEty s_TempRegisterPointEty = new TempRegisterPointEty();
-//		s_TempRegisterPointEty.setTempRegisterId(form.getTempRegisterId());
-//		s_TempRegisterPointEty.setTemp(form.getDetectTemp());
-//		List<TempRegisterPointEty> tepL = tempRegisterPointDao.selectByLimit(s_TempRegisterPointEty);
-//		if(tepL.size() == 0) {
-//			throw new Exception("当前样本没有该检测点！");
-//		}
-		
-		double miniScale = Double.parseDouble(tempRegisterEty.getMiniScale()) ;
-		av = (form.getTemp1() + form.getTemp2()) / 2 * miniScale * 0.1;
-		av = MiniScaleUtil.convertWithMiniScale(av, miniScale);
-		
-		form.setTempAvg1(av);
-		form.setTempAvg1_str(MiniScaleUtil.stringValueAsMiniScale(av, miniScale));
-		
-		double r = tempReal - av;
-		r = Math.round((r * 10 / miniScale)) * miniScale / 10;
-		r = MiniScaleUtil.convertWithMiniScale(r, miniScale);
-		form.setResult1(r);
-		form.setResult1_str(MiniScaleUtil.stringValueAsMiniScale(r, miniScale));
-		if(tempRegisterEty.getTmerName().equals("干湿球温度计")) {
-			String tempStr34 = form.getTemp34Str();
-			if(StringUtils.isEmpty(tempStr34)) {
-				throw new Exception("样本读数输入错误!");
-			}
-			temps = StringUtils.split(tempStr34, ",");
-			if(temps.length != 2) {
-				throw new Exception("样本读数输入错误!");
-			}
-			try {
-				form.setTemp3_input(temps[0].replace("+", ""));
-				form.setTemp4_input(temps[1].replace("+", ""));
-				form.setTemp3(Double.valueOf(temps[0]));
-				form.setTemp4(Double.valueOf(temps[1]));
-			}
-			catch (Exception e) {
-				throw new Exception("样本读数输入错误!");
-			}
-			
-			av = (form.getTemp3() + form.getTemp4()) / 2 * miniScale * 0.1;
-			av = MiniScaleUtil.convertWithMiniScale(av, miniScale);
-			form.setTempAvg2(av);
-			form.setTempAvg2_str(MiniScaleUtil.stringValueAsMiniScale(av, miniScale));
-			r = tempReal - av;
-			r = Math.round((r * 10 / miniScale)) * miniScale / 10;
-			r = MiniScaleUtil.convertWithMiniScale(r, miniScale);
-			form.setResult2(r);
-			form.setResult2_str(MiniScaleUtil.stringValueAsMiniScale(r, miniScale));
-		}
-		//----------------------验证及计算数据-----------结束
-
-		UserEty userEty = (UserEty) request.getSession().getAttribute("UserEty");
-		Date nowDate = new Date();
-		
-		String detectBasis = "";
-		String ss = request.getParameter("detectBasis_JJG130-2011");
-		if(StringUtils.isNotEmpty(ss)) {
-			detectBasis += ss;
-		}
-		ss = request.getParameter("detectBasis_JJG131-2004");
-		if(StringUtils.isNotEmpty(ss)) {
-			detectBasis += "," + ss;
-		}
-		
-		//由DetectId判断是否是新实验
-		DetectRecordEty detecEty = detectRecordDao.selectById(form.getDetectId());
-		//2. 如果是新实验,则先存到实验表中
-		if(detecEty == null) {
-			String experimentNo = createExperimentNo();
-			
-			detecEty = new DetectRecordEty();
-			BeanUtils.copyProperties(form, detecEty);
-			detecEty.setId(null);
-			detecEty.setExperimentNo(experimentNo);
-			detecEty.setDetectBasis(detectBasis);
-			detecEty.setCreateDate(nowDate);
-			detecEty.setCreateUserId(userEty.getId());
-
-			detecEty.setTemp1(form.getStandardTemp1());
-			detecEty.setTemp2(form.getStandardTemp2());
-			
-			detecEty.setTemp1_input(form.getStandardTemp1_input());
-			detecEty.setTemp2_input(form.getStandardTemp2_input());
-			
-			detecEty.setTempAvg1(form.getStandardTempAvg1());
-			detecEty.setTempAvg1_str(form.getStandardTempAvg1_str());
-			detecEty.setTemp3(null);
-			detecEty.setTemp4(null);
-			detecEty.setTempAvg2(null);
-			detecEty.setTempAvg2_str(null);
-			detectRecordDao.insert(detecEty);
-			
-			obj.put("experimentNo",experimentNo);
-			obj.put("detectId",detecEty.getId());
-		}
-		
-		//3. 存入到样品表
-		SampleRecordEty sampleRecordEty = new SampleRecordEty();
-		BeanUtils.copyProperties(form, sampleRecordEty);
-		sampleRecordEty.setId(null);
-		sampleRecordEty.setCreateDate(nowDate);
-		sampleRecordEty.setCreateUserID(userEty.getId());
-		sampleRecordEty.setDetectID(detecEty.getId());
-		
-		if(!tempRegisterEty.getTmerName().equals("干湿球温度计")) {
-			sampleRecordEty.setTemp3(null);
-			sampleRecordEty.setTemp4(null);
-			sampleRecordEty.setTemp3_input(null);
-			sampleRecordEty.setTemp4_input(null);
-			sampleRecordEty.setTempAvg2(null);
-			sampleRecordEty.setTempAvg2_str(null);
-		}
-		sampleRecordDao.insert(sampleRecordEty);
-		obj.put("result","success");
-		obj.put("success",true);
-		return obj.toString();
 	}
 	
 	/**
@@ -540,26 +347,20 @@ public class SampleRecordController {
 	 */
 	private SampleRecordEty createSampleRecordEty(JSONObject jsonObj, double tempReal, double detectTemp) throws Exception {
 		SampleRecordEty sampleEty = new SampleRecordEty();
-//		if(!jsonObj.containsKey("tempRegisterId") || StringUtils.isEmpty(jsonObj.getString("tempRegisterId"))) {
-//			return null;
-//		}
-//		
-//		int TempRegisterId = jsonObj.getInt("tempRegisterId");
-//		TempRegisterEty tempRegisterEty = tempRegisterDao.selectById(TempRegisterId);
-//		if(tempRegisterEty == null) {
-//			throw new Exception("无法获取检测样本，请确认输入的样本编号是否正确。");
-//		}
-//		
 		
 		if(!jsonObj.containsKey("tmterNo") || StringUtils.isEmpty(jsonObj.getString("tmterNo"))) {
 			return null;
 		}
 		
 		//改为根据编号返回ID
+		Date monday = DateUtil.getMonday(new Date());
 		String tmterNo = jsonObj.getString("tmterNo");
-		TempRegisterEty tempRegisterEty = tempRegisterDao.selectRecentByAccurateTmterNo(tmterNo);
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("tmterNo", tmterNo);
+		paramMap.put("monday", new SimpleDateFormat("yyyy-MM-dd").format(monday));
+		TempRegisterEty tempRegisterEty = tempRegisterDao.selectRecentSinceMonday(paramMap);
 		if(tempRegisterEty == null) {
-			throw new Exception("无法获取检测样本，请确认输入的样本编号是否正确。");
+			throw new Exception("没有找到本周样本，请确认输入的样本编号是否正确。");
 		}
 		
 		sampleEty.setTempRegisterId(tempRegisterEty.getId());
@@ -585,16 +386,24 @@ public class SampleRecordController {
 			sampleEty.setTemp1_input(temps1.replace("+", ""));
 			sampleEty.setTemp2_input(temps2.replace("+", ""));
 			
-			if(temps1.equals("/") || temps2.equals("/")) {//断柱
+			if(tempRegisterEty.getResult().equals("断柱")) {
 				sampleEty.setResult1Type(1);
 			}
-			else if(temps1.equals("%") || temps2.equals("%")) {//超差
-				sampleEty.setResult1Type(2);
+			else if(tempRegisterEty.getResult().equals("损坏")) {
+				sampleEty.setResult1Type(3);
 			}
 			else {
-				sampleEty.setResult1Type(0);
-				sampleEty.setTemp1(Double.valueOf(temps1));
-				sampleEty.setTemp2(Double.valueOf(temps2));
+				if(temps1.equals("/") || temps2.equals("/")) {//断柱
+					sampleEty.setResult1Type(1);
+				}
+				else if(temps1.equals("%") || temps2.equals("%")) {//超差
+					sampleEty.setResult1Type(2);
+				}
+				else {
+					sampleEty.setResult1Type(0);
+					sampleEty.setTemp1(Double.valueOf(temps1));
+					sampleEty.setTemp2(Double.valueOf(temps2));
+				}
 			}
 		}
 		catch (Exception e) {
@@ -640,16 +449,24 @@ public class SampleRecordController {
 				sampleEty.setTemp3_input(temps1.replace("+", ""));
 				sampleEty.setTemp4_input(temps2.replace("+", ""));
 				
-				if(temps1.equals("/") || temps2.equals("/")) {//断柱
+				if(tempRegisterEty.getResult().equals("断柱")) {
 					sampleEty.setResult2Type(1);
 				}
-				else if(temps1.equals("%") || temps2.equals("%")) {//超差
-					sampleEty.setResult2Type(2);
+				else if(tempRegisterEty.getResult().equals("损坏")) {
+					sampleEty.setResult2Type(3);
 				}
 				else {
-					sampleEty.setResult2Type(0);
-					sampleEty.setTemp3(Double.valueOf(temps1));
-					sampleEty.setTemp4(Double.valueOf(temps2));
+					if(temps1.equals("/") || temps2.equals("/")) {//断柱
+						sampleEty.setResult2Type(1);
+					}
+					else if(temps1.equals("%") || temps2.equals("%")) {//超差
+						sampleEty.setResult2Type(2);
+					}
+					else {
+						sampleEty.setResult2Type(0);
+						sampleEty.setTemp3(Double.valueOf(temps1));
+						sampleEty.setTemp4(Double.valueOf(temps2));
+					}
 				}
 			}
 			catch (Exception e) {

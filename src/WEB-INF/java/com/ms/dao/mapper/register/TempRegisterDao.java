@@ -37,4 +37,6 @@ public interface TempRegisterDao extends com.eddy.dao.base.BaseDao<TempRegisterE
 	TempRegisterEty selectRecentByAccurateTmterNo(String tmterNo);
 
 	int selectCountByTmterNo(Map<String, Object> paramMap);
+
+	TempRegisterEty selectRecentSinceMonday(Map<String, String> paramMap);
 }

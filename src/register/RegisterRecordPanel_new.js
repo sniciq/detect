@@ -21,10 +21,6 @@ com.ms.controller.register.RegisterRecordPanel=Ext.extend(Ext.Panel, {
 					layout: 'column',
 					items: [
 						{
-							columnWidth: .3, layout: 'form',labelWidth: dl_width,
-							items: [{ xtype: 'textfield', hidden:true,fieldLabel: '实验编号',readOnly:true,name: 'experimentNo', labelStyle: 'font-weight:bold;font-size:15px;',height: f_height,value:"", cls : 'text-RegisterRecordPanel', anchor : '99%', allowBlank : true}]
-						},
-						{
 							columnWidth: .7, layout: 'form',labelWidth: dl_width,
 							items: [
 								{
@@ -333,13 +329,6 @@ com.ms.controller.register.RegisterRecordPanel=Ext.extend(Ext.Panel, {
 					this.operateMask.hide();
 					var obj=Ext.util.JSON.decode(resp.responseText);
 					if(obj.result == 'success') {
-						if(obj.experimentNo) {
-							this.detectForm.getForm().findField('experimentNo').setValue(obj.experimentNo);
-						}
-						if(obj.detectId) {
-							this.detectForm.getForm().findField('detectId').setValue(obj.detectId);
-						}
-						
 						this.showSaveInfo('<font style="font-weight: bold;color:#333">保存成功!</font>');
 
 						this.detectForm.getForm().reset();

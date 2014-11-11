@@ -39,8 +39,8 @@ public class SampleRecordEty extends com.eddy.dao.base.BaseEntity {
 	private String result1_str;
 	private String result2_str;
 	
-	private Integer result1Type;//0:正常,1:断柱,2:超差
-	private Integer result2Type;//0:正常,1:断柱,2:超差
+	private Integer result1Type;//0:正常,1:断柱,2:超差,3:损坏
+	private Integer result2Type;//0:正常,1:断柱,2:超差,3:损坏
 	public Integer getResult1Type() {
 		return result1Type;
 	}
