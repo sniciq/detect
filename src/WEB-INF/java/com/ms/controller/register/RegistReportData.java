@@ -13,7 +13,14 @@ public class RegistReportData {
 	private String maxTemp;	//最大温度
 	private String manufacturer;
 	private String tmerType;
+	private String result;
 	
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
 	public String getManufacturer() {
 		return manufacturer;
 	}

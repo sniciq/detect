@@ -172,7 +172,7 @@
 					<td style="border-left:1px solid black;border-bottom:1px dashed black;<c:if test="${stat.last}">border-bottom:1px solid black;</c:if>">${o.tmterNo}</td>
 					<td style="border-left:1px solid black;border-bottom:1px dashed black;<c:if test="${stat.last}">border-bottom:1px solid black;</c:if>">${o.sampleNo}</td>
 					<td style="border-left:1px solid black;border-bottom:1px dashed black;<c:if test="${stat.last}">border-bottom:1px solid black;</c:if>"></td>
-					<td style="border-left:1px solid black;border-bottom:1px dashed black;border-right:1px solid black;<c:if test="${stat.last}">border-bottom:1px solid black;</c:if>"></td>
+					<td style="border-left:1px solid black;border-bottom:1px dashed black;border-right:1px solid black;<c:if test="${stat.last}">border-bottom:1px solid black;</c:if>"><c:if test="${o.result != '待测'}">${o.result}</c:if></td>
 				</tr>
 				</c:forEach>
 				<tr>
